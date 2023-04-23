@@ -1,0 +1,204 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "Shop API"
+  description:  Part of APIs In Swagger, pls see controllers class
+
+servers:
+  - url: http://localhost:8080
+    description: Test Server
+
+paths:
+  /api/v1/payment/{reference}:
+    post:
+      summary: "API to pay a bill example."
+      tags:
+        - Payment Api
+      responses:
+        200:
+          description: "when responseBody.status.code = 200"
+
+
+  /api/v1/cart:
+    post:
+      summary: "API to Add cart."
+      tags:
+        - Cart Api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartRequest'
+      responses:
+        200:
+          description: "when responseBody.status.code = 200"
+
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: "API to get Cart"
+      tags:
+        - Cart Api
+      responses:
+        200:
+          description: "when status.code = 200: cart info."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cartDTO'
+    delete:
+        security:
+          - bearerAuth: [ ]
+        summary: "API to remove Cart"
+        tags:
+          - Cart Api
+        responses:
+          200:
+            description: "when status.code = 200: Customer info."
+
+  /api/v1/catalog:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: "API to get Cart"
+      tags:
+        - Catalog Api
+      responses:
+        200:
+          description: "when status.code = 200: catalog info."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/catalogDto'
+
+  /api/v1/order:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: "API to get Cart"
+      tags:
+        - Order Api
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "when status.code = 200: order info."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderDTO'
+
+  /api/v1/shipping/:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: "API to get Cart"
+      tags:
+        - Shipping Api
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "when status.code = 200: order info."
+
+  /api/v1/pack/:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: "API to get Pack"
+      tags:
+        - Packing Api
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "when status.code = 200: order info."
+
+
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CartRequest:
+      properties:
+        productId:
+          type: integer
+        quantity:
+          type: integer
+
+    Item:
+      properties:
+        title:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: number
+
+    cartDTO:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        total:
+          type: number
+        discountPercentage:
+          type: number
+        Integer:
+          type: number
+
+    orderDTO:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        total:
+          type: number
+        discount:
+          type: number
+
+
+    catalogDto:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    Product:
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        packingType:
+          type: string
+        category:
+          type: string
