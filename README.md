@@ -99,5 +99,4 @@ docker compose up command
 
 
 ### Swagger
-
 in the swagger folder, we can detect the documents of our end points 
